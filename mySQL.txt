@@ -94,7 +94,7 @@ FOREIGN KEY (uni_id) REFERENCES University (uni_id)
 CREATE TABLE Public_event (
 event_id 		INTEGER NOT NULL,
 date			DATETIME NOT NULL,
-Superadmin_id	INTEGER NOT NULL,
+superadmin_id	INTEGER NOT NULL,
 PRIMARY KEY (event_id, date),
 FOREIGN KEY (event_id) REFERENCES Eventtbl (event_id),
 FOREIGN KEY (date) REFERENCES Eventtbl (date),
