@@ -1,6 +1,25 @@
+CREATE TABLE University (
+uni_id			INTEGER NOT NULL,
+uni_name		CHAR(30),
+num_students		INTEGER,
+uni_description	CHAR(200),
+uni_location		CHAR(50),
+gallery			CHAR(200),
+PRIMARY KEY (uni_id)
+);
+
+CREATE TABLE Rso (
+rso_id			INTEGER NOT NULL,
+uni_id			INTEGER NOT NULL,
+num_students		INTEGER,
+num_events		INTEGER,
+PRIMARY KEY (rso_id),
+FOREIGN KEY (uni_id) REFERENCES University(uni_id)
+);
+
 CREATE TABLE Usertbl (
 user_id		INTEGER NOT NULL,
-user_password	INTEGER NOT NULL,
+user_password	CHAR(30) NOT NULL,
 uni_id			INTEGER,
 rso_id			INTEGER,
 PRIMARY KEY (user_id),
@@ -10,7 +29,7 @@ FOREIGN KEY (rso_id) REFERENCES Rso(rso_id)
 
 CREATE TABLE Admin (
 user_id		INTEGER NOT NULL,
-admin_id		INTEGER NOT NULL,
+admin_id		INTEGER UNIQUE NOT NULL,
 num_events		INTEGER,
 num_student		INTEGER,
 PRIMARY KEY (user_id) ,
@@ -18,64 +37,31 @@ FOREIGN KEY (user_id) REFERENCES Usertbl (user_id)
 );
 
 CREATE TABLE Super_admin (
-superadmin_id		INTEGER NOT NULL,
+superadmin_id		INTEGER UNIQUE NOT NULL,
 user_id			INTEGER NOT NULL,
 PRIMARY KEY (user_id),
 FOREIGN KEY (user_id) REFERENCES Usertbl (user_id)
 );
 
-CREATE TABLE University (
-superadmin_id	INTEGER NOT NULL,
-uni_id			INTEGER NOT NULL,
-uni_name		CHAR(30),
-num_students		INTEGER,
-uni_description	CHAR(200),
-uni_location		CHAR(50),
-gallery			CHAR(200),
-PRIMARY KEY (uni_id),
-FOREIGN KEY (superadmin_id) REFERENCES Super_admin(superadmin_id)
-);
-
-
-
-CREATE TABLE Rso (
-rso_id			INTEGER NOT NULL,
-uni_id			INTEGER NOT NULL,
-admin_id		INTEGER NOT NULL,
-num_students		INTEGER,
-num_events		INTEGER,
-PRIMARY KEY (rso_id),
-FOREIGN KEY (uni_id) REFERENCES University(uni_id),
-FOREIGN KEY (Admin_id) REFERENCES Admin(Admin_id)
-);
 
 CREATE TABLE Eventtbl (
 event_id 		INTEGER NOT NULL,
 event_email		CHAR(30),
-date			DATETIME NOT NULL,
+date			DATETIME UNIQUE NOT NULL,
 event_category	CHAR(30),
 event_description	CHAR(255),
 event_phone		INTEGER,
 location_name		CHAR(30),
-PRIMARY KEY (event_id, date),
-FOREIGN KEY (location_name) REFERENCES Location(location_name)
-);
-
-CREATE TABLE Location (
-location_name		CHAR(30),
-address		CHAR(50),
-longitude		CHAR(30),
-latitude			CHAR(30),
-PRIMARY KEY (location_name)
+PRIMARY KEY (event_id, date)
 );
 
 CREATE TABLE Rso_event (
 rso_id			INTEGER NOT NULL,
 event_id 		INTEGER NOT NULL,
-admin_id		INTEGER NOT NULL,
-date			DATETIME NOT NULL,
+admin_id		INTEGER UNIQUE NOT NULL,
+date			DATETIME UNIQUE NOT NULL,
 PRIMARY KEY (event_id, date),
-FOREIGN KEY (event_id) REFERENCES Eventtbl(even_id),
+FOREIGN KEY (event_id) REFERENCES Eventtbl(event_id),
 FOREIGN KEY (date) REFERENCES Eventtbl(date),
 FOREIGN KEY (rso_id) REFERENCES Rso(rso_id),
 FOREIGN KEY (admin_id) REFERENCES Admin(admin_id)
@@ -94,7 +80,7 @@ FOREIGN KEY (uni_id) REFERENCES University (uni_id)
 CREATE TABLE Public_event (
 event_id 		INTEGER NOT NULL,
 date			DATETIME NOT NULL,
-superadmin_id	INTEGER NOT NULL,
+superadmin_id	INTEGER UNIQUE NOT NULL,
 PRIMARY KEY (event_id, date),
 FOREIGN KEY (event_id) REFERENCES Eventtbl (event_id),
 FOREIGN KEY (date) REFERENCES Eventtbl (date),
