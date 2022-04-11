@@ -1,0 +1,24 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+	<center>
+	<h1> Hello {{ first_name }}! Events For {{ month }} {{ year }}</h1>
+	as of {{ time }}
+	<br/><br/>
+	{{ cal|safe }}
+	<br/><br/>
+	Copyright (c) {{ current_year }}
+	<br/><br/>
+	<tbody>
+	{% for item in users %} 
+		<tr>
+			<th scope="row">{{ users_id}} </th>
+			<td>{{ item.user_id }}</td>
+			<td>{{ item.user_password }}</td>
+			<td>{{ item.uni_id }}</td>
+			<td>{{ item.rso_id }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+	</center>
+{% endblock %}
