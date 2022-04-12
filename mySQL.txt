@@ -41,6 +41,7 @@ rso_host		INTEGER,
 admin_id		INTEGER,
 PRIMARY KEY (event_id, date)
 FOREIGN KEY (admin_id) REFERENCES Usertbl(user_id)
+FOREIGN KEY (rso_host) REFERENCES Rso(rso_id)
 );
 
 CREATE TABLE Review (
