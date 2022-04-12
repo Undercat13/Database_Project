@@ -8,17 +8,6 @@
 from django.db import models
 
 
-class Admin(models.Model):
-    user_id = models.IntegerField(primary_key=True)
-    admin_id = models.IntegerField(unique=True)
-    num_events = models.IntegerField(blank=True, null=True)
-    num_student = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'admin'
-
-
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
 
@@ -141,32 +130,13 @@ class Eventtbl(models.Model):
     event_description = models.CharField(max_length=255, blank=True, null=True)
     event_phone = models.IntegerField(blank=True, null=True)
     location_name = models.CharField(max_length=30, blank=True, null=True)
+    event_type = models.CharField(max_length=20, blank=True, null=True)
+    rso_host = models.IntegerField(blank=True, null=True)
+    admin_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'eventtbl'
-        unique_together = (('event_id', 'date'),)
-
-
-class PrivateEvent(models.Model):
-    event_id = models.IntegerField(primary_key=True)
-    uni_id = models.IntegerField()
-    date = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'private_event'
-        unique_together = (('event_id', 'date'),)
-
-
-class PublicEvent(models.Model):
-    event_id = models.IntegerField(primary_key=True)
-    date = models.DateTimeField()
-    superadmin_id = models.IntegerField(unique=True)
-
-    class Meta:
-        managed = False
-        db_table = 'public_event'
         unique_together = (('event_id', 'date'),)
 
 
@@ -193,27 +163,6 @@ class Rso(models.Model):
         db_table = 'rso'
 
 
-class RsoEvent(models.Model):
-    rso_id = models.IntegerField()
-    event_id = models.IntegerField(primary_key=True)
-    admin_id = models.IntegerField(unique=True)
-    date = models.DateTimeField(unique=True)
-
-    class Meta:
-        managed = False
-        db_table = 'rso_event'
-        unique_together = (('event_id', 'date'),)
-
-
-class SuperAdmin(models.Model):
-    superadmin_id = models.IntegerField(unique=True)
-    user_id = models.IntegerField(primary_key=True)
-
-    class Meta:
-        managed = False
-        db_table = 'super_admin'
-
-
 class University(models.Model):
     uni_id = models.IntegerField(primary_key=True)
     uni_name = models.CharField(max_length=30, blank=True, null=True)
@@ -230,6 +179,7 @@ class University(models.Model):
 class Usertbl(models.Model):
     user_id = models.IntegerField(primary_key=True)
     user_password = models.CharField(max_length=30)
+    user_type = models.CharField(max_length=20)
     uni_id = models.IntegerField(blank=True, null=True)
     rso_id = models.IntegerField(blank=True, null=True)
 
