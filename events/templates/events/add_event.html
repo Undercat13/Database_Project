@@ -1,19 +1,36 @@
 {% extends 'events/base.html' %}
 
+<div>
 {% block content %}
+<!-- style for removing up and down arrows for event ida nd phone num-->
+	<style>
+		input#id_event_id::-webkit-outer-spin-button,
+		input#id_event_id::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;}
+
+    	input#id_event_phone::-webkit-outer-spin-button,
+		input#id_event_phone::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+	</style>
 	<center>
 	<h1> Add Event to Database </h1>
 	<br/><br/>
+	</center>
 	{% if submitted %}
 		your event was submitted successfully
+		
 	{% else %}
 		<form action="" method=POST>
 			{% csrf_token %}
 
 			{{ form.as_p }}
-
+		<center>
 			<input type= "submit" value="Submit" class="btn btn-secondary">
+		</center>
 		</form>
 	{% endif %}
-	</center>
+	
 {% endblock %}
+</div>
