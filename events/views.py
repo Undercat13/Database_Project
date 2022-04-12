@@ -4,7 +4,7 @@ from calendar import HTMLCalendar
 from datetime import datetime
 from .models import Usertbl
 from .models import Eventtbl
-from .forms import EventForm
+from .forms import EventForm, UniversityForm, RsoForm, ReviewForm
 from django.http import HttpResponseRedirect
 
 def all_events(request):
@@ -55,3 +55,56 @@ def add_event(request):
 		'submitted': submitted
 		})
 
+def add_university(request):
+	submitted = False
+	if request.method == "POST":
+		form = UniversityForm(request.POST)
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect('/add_university?submitted=True')
+	else:
+		form = UniversityForm
+		if 'submitted' in request.GET:
+			submitted = True
+	
+	return render(request, 'events/add_university.html',
+		{
+		'form': form,
+		'submitted': submitted
+		})
+
+def add_rso(request):
+	submitted = False
+	if request.method == "POST":
+		form = RsoForm(request.POST)
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect('/add_rso?submitted=True')
+	else:
+		form = RsoForm
+		if 'submitted' in request.GET:
+			submitted = True
+	
+	return render(request, 'events/add_rso.html',
+		{
+		'form': form,
+		'submitted': submitted
+		})
+
+def add_review(request):
+	submitted = False
+	if request.method == "POST":
+		form = ReviewForm(request.POST)
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect('/add_review?submitted=True')
+	else:
+		form = ReviewForm
+		if 'submitted' in request.GET:
+			submitted = True
+	
+	return render(request, 'events/add_review.html',
+		{
+		'form': form,
+		'submitted': submitted
+		})
