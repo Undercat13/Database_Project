@@ -2,8 +2,11 @@ from django.shortcuts import render
 import calendar
 from calendar import HTMLCalendar
 from datetime import datetime
+from django.urls import reverse, reverse_lazy
 from .models import Usertbl
 from .models import Eventtbl
+from .models import Rso
+from.models import University
 from .forms import EventForm, UniversityForm, RsoForm, ReviewForm
 from django.http import HttpResponseRedirect
 
@@ -108,3 +111,27 @@ def add_review(request):
 		'form': form,
 		'submitted': submitted
 		})
+
+def rso_list(request):
+	rsos = Rso.objects.all()
+	return render(request, 'events/list_rso.html', {'rsos':rsos})
+
+def view_rso(request, curr_rso):
+	rso = Rso.objects.get(pk = curr_rso)
+	return render(request, 'events/view_rso.html', {'rso':rso})
+
+def events_list(request):
+	events = Eventtbl.objects.all()
+	return render(request, 'events/list_events.html', {'events':events})
+
+def view_event(request, curr_event):
+	event = Eventtbl.objects.get(pk = curr_event)
+	return render(request, 'events/view_event.html', {'event':event})
+
+def universities_list(request):
+	universities = University.objects.all()
+	return render(request, 'events/list_universities.html', {'universities':universities})
+
+def view_university(request, curr_uni):
+	university = University.objects.get(pk = curr_uni)
+	return render(request, 'events/view_university.html', {'university':university})

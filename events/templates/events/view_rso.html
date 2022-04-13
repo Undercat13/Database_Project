@@ -1,0 +1,13 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+<h1 class="display-3 text-center">Rso Information</h1>
+<br><br><br>
+<div class="container-fluid text-center col-auto">
+    <p class="h3">Rso ID: {{ rso.rso_id }}</p>
+    <p class="h3">university ID: {{ rso.uni_id }}</p>
+    <p class="h3">Number of Students: {{ rso.num_students }}</p>
+    <p class="h3">Number of Events: {{ rso.num_events }}</p>
+    <br>
+</div>
+{% endblock%}

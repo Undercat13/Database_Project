@@ -1,0 +1,12 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+	<center>
+	<h1> Rsos </h1>
+	<br/><br/>
+    {% for rso in rsos%}
+        <font size="100">
+        <a  href="{% url 'view_rso' rso.rso_id %}">{{ rso.rso_id }} </a><br/>
+    {%endfor%}
+	</center>
+{% endblock %}

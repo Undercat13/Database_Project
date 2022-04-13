@@ -1,0 +1,12 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+	<center>
+	<h1> Universities </h1>
+	<br/><br/>
+    {% for university in universities%}
+        <font size="100">
+        <a  href="{% url 'view_university' university.uni_id %}">{{ university.uni_name }} </a><br/>
+    {%endfor%}
+	</center>
+{% endblock %}

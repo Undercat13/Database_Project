@@ -1,0 +1,15 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+<h1 class="display-3 text-center">University Information</h1>
+<br><br><br>
+<div class="container-fluid text-center col-auto">
+    <p class="h3">University ID: {{ university.uni_id }}</p>
+    <p class="h3">University Name: {{ university.uni_name }}</p>
+    <p class="h3">Number Of Students: {{ university.num_students }}</p>
+    <p class="h3">University Description: {{ university.uni_description }}</p>
+    <br/>
+    <br>
+</div>
+
+{% endblock%}
