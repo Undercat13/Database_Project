@@ -1,0 +1,25 @@
+{% extends 'events/base.html' %}
+
+<div>
+{% block content %}
+<!-- style for removing up and down arrows for event ida nd phone num-->
+
+	<center>
+	<h1> Login </h1>
+	<br/><br/>
+	</center>
+		<form action="" method=POST>
+			{% csrf_token %}
+
+	  <div class="mb-3">
+	    <label for="exampleInputEmail1" class="form-label">Username</label>
+	    <input type="text" class="form-control" name="username" aria-describedby="emailHelp">
+	  </div>
+	  <div class="mb-3">
+	    <label for="exampleInputPassword1" class="form-label">Password</label>
+	    <input type="password" class="form-control" name="password">
+	  </div>
+	  <button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+{% endblock %}
+</div>
