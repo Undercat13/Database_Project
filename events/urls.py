@@ -14,4 +14,5 @@ urlpatterns = [
     path('view_event/<curr_event>', views.view_event, name = 'view_event'),
     path('universities_list', views.universities_list, name = 'universities_list'),
     path('view_university/<curr_uni>', views.view_university, name = 'view_university'),
+    path('login_user', views.login_user, name="login_user"),
 ]

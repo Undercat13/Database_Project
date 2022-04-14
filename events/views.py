@@ -1,12 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import calendar
 from calendar import HTMLCalendar
 from datetime import datetime
 from django.urls import reverse, reverse_lazy
-from .models import Usertbl
-from .models import Eventtbl
-from .models import Rso
-from.models import University
+from django.contrib.auth import authenticate, login, logout
+from .models import Usertbl, Eventtbl, Rso, University
 from .forms import EventForm, UniversityForm, RsoForm, ReviewForm
 from django.http import HttpResponseRedirect
 
@@ -135,3 +133,18 @@ def universities_list(request):
 def view_university(request, curr_uni):
 	university = University.objects.get(pk = curr_uni)
 	return render(request, 'events/view_university.html', {'university':university})
+
+def login_user(request):
+	if request.method == "POST":
+		username = request.POST['username']
+		password = request.POST['password']
+		user = authenticate(request, username=username, password=password)
+		if user is not None:
+			login(request, user)
+			return redirect('home')
+			# Redirect to a success page.
+		else:
+			messages.success(request, "There was an error logging in try again.")
+			return redirect('login_user')
+	else:
+		return render(request, 'events/login_user.html', {})
