@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from .models import Usertbl, Eventtbl, Rso, University
 from .forms import EventForm, UniversityForm, RsoForm, ReviewForm
 from django.http import HttpResponseRedirect
+from django.contrib import messages
 
 def all_events(request):
 	event_lsit = Eventtbl.objects.all()
