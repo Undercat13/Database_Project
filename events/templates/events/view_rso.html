@@ -4,15 +4,19 @@
 <h1 class="display-3 text-center">Rso Information</h1>
 <div class = 'card'>
     <div class = "card-header">
-        Rso
+        {{ rso.name }}
     </div>
         <div class = 'card-body'>
+
             <p class = 'card-text'>
                 <li class="h3">Rso ID: {{ rso.rso_id }}</li>
                 <li class="h3">university ID: {{ rso.uni_id }}</li>
                 <li class="h3">Number of Students: {{ rso.num_students }}</li>
                 <li class="h3">Number of Events: {{ rso.num_events }}</li>
-            <button type="join" class="btn btn-primary">join</button>
+            <form action="" method="post">
+                {% csrf_token %}
+                    <button name="join" value="upvote">join</button>
+            </form>
             </div>
         </div>
     </div>

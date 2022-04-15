@@ -43,15 +43,22 @@ def home(request, year = datetime.now().year, month = datetime.now().strftime('%
 		"users": users
 		})
 
+
 def add_event(request):
 	submitted = False
 	if request.method == "POST":
 		form = EventForm(request.POST)
 		if form.is_valid():
+			form.instance.admin_id = request.user.user_id
+			form.instance.uni_id = request.user.uni_id
+			if (form.instance.rso_host != 0):
+				rso = Rso.objects.get(rso_id = form.instance.rso_host)
+				rso.num_events += 1
+				rso.save()
 			form.save()
 			return HttpResponseRedirect('/add_event?submitted=True')
 	else:
-		form = EventForm
+		form = EventForm(initial={"rso_host": "0"})
 		if 'submitted' in request.GET:
 			submitted = True
 	
@@ -87,7 +94,12 @@ def add_rso(request):
 		form = RsoForm(request.POST)
 		if form.is_valid():
 			form.instance.admin_id = request.user.user_id
+			form.instance.uni_id = request.user.uni_id
+			#add rso_id to rso_ids on user
+			request.user.rso_ids = request.user.rso_ids	+ ',' + str(form.instance.rso_id)
+			form.instance.num_students += 1
 			form.save()
+			request.user.save()
 			return HttpResponseRedirect('/add_rso?submitted=True')
 	else:
 		form = RsoForm
@@ -119,11 +131,33 @@ def add_review(request, curr_event):
 
 def rso_list(request):
 	rsos = Rso.objects.all()
-	return render(request, 'events/list_rso.html', {'rsos':rsos})
+	curr_user = request.user
+	if (type(curr_user.rso_ids) == 'NoneType'):
+		curr_user_rsos = curr_user.rso_ids.split(",")
+		for i in range(0, len(curr_user_rsos)):
+			curr_user_rsos[i] = int(curr_user_rsos[i])
+	else:
+		curr_user_rsos = ""
+
+	curr_user_rsos_list = Rso.objects.filter(rso_id__in = curr_user_rsos)
+	return render(request, 'events/list_rso.html', {'rsos':rsos, 'curr_user_rsos_list':curr_user_rsos_list, 'curr_user': curr_user})
 
 def view_rso(request, curr_rso):
+	joined = False
+	user = request.user
 	rso = Rso.objects.get(pk = curr_rso)
-	return render(request, 'events/view_rso.html', {'rso':rso})
+	if request.method == "POST":
+		#add rso_id to rso_ids on user
+		user.rso_ids = user.rso_ids	+ ',' + str(rso.rso_id)
+		rso.num_students += 1
+		if( rso.num_students == 4):
+			rso.is_valid = True
+			rso.admin_id = user.user_id
+			user.user_type = "Admin"
+		rso.save()
+		request.user.save()
+		messages.success(request, "Added to RSO")
+	return render(request, 'events/view_rso.html', {'rso':rso, 'user':user})
 
 def events_list(request):
 	events = Eventtbl.objects.all()
@@ -139,7 +173,8 @@ def view_event(request, curr_event):
 
 def universities_list(request):
 	universities = University.objects.all()
-	return render(request, 'events/list_universities.html', {'universities':universities})
+	user = request.user
+	return render(request, 'events/list_universities.html', {'universities':universities, 'user': user})
 
 def view_university(request, curr_uni):
 	university = University.objects.get(pk = curr_uni)
@@ -152,7 +187,7 @@ def login_user(request):
 		user = authenticate(request, username=username, password=password)
 		if user is not None:
 			login(request, user)
-			return redirect('home')
+			return redirect('events_list')
 			# Redirect to a success page.
 		else:
 			messages.success(request, "There was an error logging in try again.")
@@ -228,7 +263,7 @@ def edit_review(request, curr_event, curr_user):
 def logout_user(request):
 	logout(request)
 	messages.success(request, ("You were successfully logged out"))
-	return redirect('home')
+	return redirect('events_list')
 
 def register_user(request):
 	if request.method == "POST":
@@ -238,9 +273,13 @@ def register_user(request):
 			username = form.cleaned_data['username']
 			password = form.cleaned_data['password1']
 			user = authenticate(username=username, password=password)
+			user.user_type = "Student"
 			login(request, user)
 			messages.success(request, ("registration Successful"))
-			return redirect('home')
+			uni = University.objects.get(uni_id = form.instance.uni_id)
+			uni.num_students += 1
+			uni.save()
+			return redirect('events_list')
 	else:
 		form = RegistrationForm()
 

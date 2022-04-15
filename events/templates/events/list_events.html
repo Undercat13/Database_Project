@@ -9,48 +9,73 @@
 	<center>
 	<h1> Events </h1>
 	<br/><br/>
-    {% for event in events%}
-        <font size="100">
+    Public:
+    {% for event in events %}
             <tr>
-                {%if event.event_type == "Public"%}
+                {%if event.event_category == "public"%}
                 <td>
-                    <a  href="{% url 'view_event' event.event_id %}">{{ event.name}} </a><br/>
+                    <a  href="{% url 'view_event' event.event_id %}">{{ event.name }} </a><br/>
+                </td>
+                <td>
+                    {{ event.date }}
                 </td>
                 <td align="right">
-
-                    {% if event.admin_id == user.user_id %}
+                    {% if user.user_id == event.admin_id%}
                         {% if user.user_type == "Admin" %}
                         <a  href="{% url 'edit_event' event.event_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
-                        
-                        {% elif user.user_type == "Superadmin" %}
+                        {% endif %}
+
+                        {% if curr_user.user_type == "Superadmin" %}
                         <a  href="{% url 'edit_event' event.event_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
                         {% endif %}
-                    {% endif %}
+                    {%endif%}
                 </td>
                 {% endif %}
-
-                {% if event.event_type == "Rso" %}
-                    {% if user.rso_id == event.rso_id %}
+            </tr>
+        {%endfor%}
+</center>
+</table>
+<center>
+    Rso:
+    <table class='table table-striped table-hover table-bordered'>
+    {% for event in events%}
+            <tr>
+                {% if event.event_category == "rso" %}
+                    {% if curr_user.rso_id == event.rso_id %}
                         <td>
                             <a  href="{% url 'view_event' event.event_id %}">{{ event.name}} </a><br/>
                         </td>
+                        <td>
+                         {{ event.date }}
+                        </td>
                         <td align="right">
-                            {% if event.admin_id == user.user_id %}
+                            {% if event.admin_id == curr_user.user_id %}
                                 {% if user.user_type == "Admin" %}
                                 <a  href="{% url 'edit_event' event.event_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
                                 
-                                {% elif user.user_type == "Superadmin" %}
+                                {% elif curr_user.user_type == "Superadmin" %}
                                 <a  href="{% url 'edit_event' event.event_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
                                 {% endif %}
                             {% endif %}
                         </td>
                     {% endif %}
                 {% endif %}
-
-                {% if event.event_type == "Private" %}
+            </tr>
+    {%endfor%}
+</table>
+</center>
+<center>
+    Private:
+<table class='table table-striped table-hover table-bordered'>
+    {% for event in events%}
+            <tr>
+                {% if event.event_category == "private" %}
                     {% if event.uni_id == user.uni_id %}
                     <td>
                         <a  href="{% url 'view_event' event.event_id %}">{{ event.name}} </a><br/>
+                    </td>
+                    <td>
+                         {{ event.date }}
                     </td>
                     <td align="right">
                         {% if event.admin_id == user.user_id %}
@@ -64,7 +89,6 @@
                     </td>
                     {% endif %}
                 {% endif %}
-
             </tr>
     {%endfor%}
 	</center>

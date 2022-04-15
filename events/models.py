@@ -74,8 +74,7 @@ class Events_usertbl(models.Model):
     user_id = models.IntegerField(primary_key=True)
     user_type = models.CharField(max_length=20, choices=PERM_LEVELS, null=True)
     uni_id = models.IntegerField(blank=True, null=True)
-    rso_ids = models.CharField(max_length=150)
-    rso_id = models.IntegerField(max_length=150)
+    rso_ids = models.CharField(max_length=150, blank=True)
 
     class Meta:
         managed = False
@@ -163,9 +162,11 @@ class Eventtbl(models.Model):
     event_description = models.CharField(max_length=255, blank=True, null=True)
     event_phone = models.IntegerField(blank=True, null=True)
     location_name = models.CharField(max_length=30, blank=True, null=True)
-    event_type = models.CharField(max_length=20, choices=event_types, null=True)
+    event_type = models.CharField(max_length=30, blank=True, null=True)
     rso_host = models.IntegerField(blank=True, null=True)
     admin_id = models.IntegerField(blank=True, null=True)
+    uni_id = models.IntegerField(blank=True, null=True)
+
     class Meta:
         managed = False
         db_table = 'eventtbl'
@@ -190,6 +191,8 @@ class Rso(models.Model):
     admin_id = models.IntegerField()
     num_students = models.IntegerField(blank=True, null=True)
     num_events = models.IntegerField(blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True)
+
 
     class Meta:
         managed = False
@@ -220,8 +223,7 @@ class Usertbl(AbstractUser):
     user_id = models.IntegerField(primary_key=True)
     user_type = models.CharField(max_length=20, choices=PERM_LEVELS, null=True)
     uni_id = models.IntegerField(blank=True, null=True)
-    rso_id = models.IntegerField(blank=True, null=True)
-
+    rso_ids = models.CharField(max_length=150, null=True)
     REQUIRED_FIELDS = ['first_name', 'last_name', 'user_id']
     def __str__(self):
         return self.username

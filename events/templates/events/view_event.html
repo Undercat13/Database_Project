@@ -17,7 +17,11 @@
                     <li class="h3">Description: {{ event.event_description }}</li>
                     <li class="h3">Contact Number: {{ event.event_phone }}</li>
                     <li class="h3">Type: {{ event.event_type }}</li>
-                    <li class="h3">Host: <a  href="{% url 'view_rso' event.rso_host %}">{{ event.rso_host }} </a></li>
+                    {% if event.rso_host != 0 %}
+                    <li class="h3">Host: <a  href="{% url 'view_rso' event.rso_host %}">
+                    {{ event.rso_host }}</a>
+                </li>
+                     {%endif%}
                 </div>
             </div>
         <div class = "card-header">

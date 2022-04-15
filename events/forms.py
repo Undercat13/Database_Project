@@ -7,37 +7,45 @@ from .models import Usertbl, Eventtbl, University, Rso, Review
 class EventForm(ModelForm):
 	class Meta:
 		model = Eventtbl
-		fields = "__all__" # might not want all of the fields example:( 'event_id', 'event_email' ect)
+		fields = ['name', 'event_id', 'event_email', 'date', 'event_category', 'event_description', 'event_phone', 'location_name', 'event_type', 'rso_host'] # might not want all of the fields example:( 'event_id', 'event_email' ect)
 		labels = {
 			'name': 'Event Name:',
 			'event_id': 'Event ID Number:',
 			'event_email': 'Contact Email:',
 			'date': 'Event Date:',
-			'event_category': 'Choose the type of event:',
+			'event_category': 'Choose the category of event:',
 			'event_description': 'Event Description:',
 			'event_phone': 'Contact Phone Number:',
 			'location_name': 'Event Location:',
 			'event_type': 'Event Type:',
 			'rso_host': 'Host Rso:',
-			'admin_id': 'admin_id:'
 		}
-		CATEGORY = [
+		types = [
 			('public', 'Public'),
 			('private', 'Private'),
 			('rso', 'Rso')
 		]
+		categories = [
+			('sports', 'Sports'),
+			('tech talk', 'Tech Talk'),
+			('social', 'Social'),
+			('concert','Concert'),
+			('lecture', 'lecture'),
+			('fundraising', 'Fundraising'),
+			('competition', 'Competition')
+		]
+
 		widgets = {
 			'name': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Name'}),
 			'event_id': forms.NumberInput(attrs={'class':'form-control', 'placeholder': '#'}),
 			'event_email': forms.EmailInput(attrs={'class':'form-control', 'placeholder': 'contact@email.com'}),
 			'date': forms.DateInput(attrs={'class':'form-control', 'placeholder': 'MM/DD/YYYY HH:MM'}),
-			'event_category':  forms.Select(choices=CATEGORY, attrs={'class':'form-control'}),
+			'event_category':  forms.Select(choices=types, attrs={'class':'form-control'}),
 			'event_description': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Description'}),
 			'event_phone':  forms.NumberInput(attrs={'class':'form-control', 'placeholder': '### ### ####'}),
 			'location_name':  forms.TextInput(attrs={'class':'form-control','placeholder': 'Location'}),
-			'event_type':  forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Type of Event'}),
-			'rso_host':  forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Host Rso'}),
-			'admin_id':  forms.NumberInput(attrs={'class':'form-control', 'placeholder': '#'}),
+			'event_type':  forms.Select(choices=categories, attrs={'class':'form-control'}),
+			'rso_host':  forms.NumberInput(attrs={'class':'form-control', 'initial': "0"}),
 		}
 
 class UniversityForm(ModelForm):
@@ -62,16 +70,17 @@ class UniversityForm(ModelForm):
 class RsoForm(ModelForm):
 	class Meta:
 		model = Rso
-		fields = ['rso_id', 'uni_id', 'num_students', 'num_events']
+		fields = ['name','rso_id', 'num_students', 'num_events']
 		labels = {
+			'name': 'Rso Name:',
 			'rso_id': 'Rso ID Number:',
-			'uni_id': 'Corresponding University Id:',
 			'num_students': 'Number of Students:',
 			'num_events': 'Number of Events:',
 		}
 		widgets = {
+			'name': forms.TextInput(attrs={'class':'form-control', 'placeholder': '#'}),
 			'rso_id': forms.NumberInput(attrs={'class':'form-control', 'placeholder': '#'}),
-			'uni_id': forms.NumberInput(attrs={'class':'form-control', 'placeholder': '#'}),
+			#'uni_id': forms.Select(attrs={'class':'form-control', 'placeholder': '#'}),
 			'num_students':  forms.NumberInput(attrs={'class':'form-control', 'placeholder': '#'}),
 			'num_events':  forms.NumberInput(attrs={'class':'form-control','placeholder': '#'})
 		}
@@ -81,7 +90,7 @@ class ReviewForm(ModelForm):
 		model = Review
 		fields = [ 'comment', 'rating']
 		labels = {
-			'rating': 'Your Rating (out of 10):',
+			'rating': 'Your Rating (out of 5):',
 			'comment': 'Enter Your Review:',
 			#'user_id': 'Enter your User Id:',
 		}
@@ -92,23 +101,20 @@ class ReviewForm(ModelForm):
 		}
 
 class RegistrationForm(UserCreationForm):
-	"""docstring for RegistrationForm"""
-	user_id = forms.IntegerField()
-	uni_id = forms.IntegerField()
-	username = forms.CharField(max_length=150)
-	password1 = forms.CharField(widget=forms.PasswordInput)
-	password2 = forms.CharField(widget=forms.PasswordInput)
-	
-
 	class Meta: # define a metadata related to this class
 		model = Usertbl
 		fields = (
-			'user_id',
-			'uni_id',
 			'username',
 			'password1',
 			'password2',
+			'user_id',
+			'uni_id',
 
 		)
-	# def save(self, commit=True):
-	# 	user = super(RegistrationForm, self).save(commit=False)
+		widgets = {
+			'username': forms.TextInput(),
+			'password1': forms.PasswordInput(),
+			'password2': forms.PasswordInput(),
+			'user_id': forms.NumberInput(attrs={'class':'form-control', 'placeholder': '#'}),
+			'uni_id': forms.Select(choices=[(uni.uni_id, uni.uni_name) for uni in University.objects.all()], attrs={'class':'form-control'}),
+			}

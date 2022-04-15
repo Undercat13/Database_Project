@@ -2,15 +2,14 @@
 
 
 {% block content %}
-<h1 class="display-3 text-center">university Information</h1>
+<h1 class="display-3 text-center">University Information</h1>
 <div class = 'card'>
     <div class = "card-header">
-        University
+       {{ university.uni_name }}
     </div>
         <div class = 'card-body'>
             <p class = 'card-text'>
                 <li class="h3">University ID: {{ university.uni_id }}</li>
-                <li class="h3">University Name: {{ university.uni_name }}</li>
                 <li class="h3">Number Of Students: {{ university.num_students }}</li>
                 <li class="h3">University Description: {{ university.uni_description }}</li>
 
