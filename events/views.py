@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 import calendar
+import random
 from calendar import HTMLCalendar
 from datetime import datetime
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import authenticate, login, logout
-from .models import Usertbl, Eventtbl, Rso, University, Review, Events_usertbl
-from .forms import EventForm, UniversityForm, RsoForm, ReviewForm
+from events.models import Usertbl
+from .models import Eventtbl, Rso, University, Review, Events_usertbl
+from .forms import EventForm, RegistrationForm, UniversityForm, RsoForm, ReviewForm
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
@@ -229,7 +231,7 @@ def logout_user(request):
 
 def register_user(request):
 	if request.method == "POST":
-		form = UserCreationForm(request.POST)
+		form = RegistrationForm(request.POST)
 		if form.is_valid():
 			form.save()
 			username = form.cleaned_data['username']
@@ -239,7 +241,7 @@ def register_user(request):
 			messages.success(request, ("registration Successful"))
 			return redirect('home')
 	else:
-		form = UserCreationForm()
+		form = RegistrationForm()
 
 	return render(request, 'events/register_user.html', {
 		'form': form

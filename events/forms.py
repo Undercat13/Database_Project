@@ -1,5 +1,6 @@
 from django import forms
 from django.forms import ModelForm
+from django.contrib.auth.forms import UserCreationForm
 from .models import Usertbl, Eventtbl, University, Rso, Review
 
 #create event form
@@ -90,4 +91,24 @@ class ReviewForm(ModelForm):
 			#'user_id':  forms.NumberInput(attrs={'class':'form-control', 'placeholder': '#'}),
 		}
 
+class RegistrationForm(UserCreationForm):
+	"""docstring for RegistrationForm"""
+	user_id = forms.IntegerField()
+	uni_id = forms.IntegerField()
+	username = forms.CharField(max_length=150)
+	password1 = forms.CharField(widget=forms.PasswordInput)
+	password2 = forms.CharField(widget=forms.PasswordInput)
+	
 
+	class Meta: # define a metadata related to this class
+		model = Usertbl
+		fields = (
+			'user_id',
+			'uni_id',
+			'username',
+			'password1',
+			'password2',
+
+		)
+	# def save(self, commit=True):
+	# 	user = super(RegistrationForm, self).save(commit=False)
