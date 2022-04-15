@@ -197,6 +197,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='University',
             fields=[
+                ('superadmin_id', models.IntegerField( serialize=False)),
                 ('uni_id', models.IntegerField(primary_key=True, serialize=False)),
                 ('uni_name', models.CharField(blank=True, max_length=30, null=True)),
                 ('num_students', models.IntegerField(blank=True, null=True)),

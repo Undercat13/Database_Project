@@ -62,7 +62,7 @@ class UniversityForm(ModelForm):
 class RsoForm(ModelForm):
 	class Meta:
 		model = Rso
-		fields = "__all__"
+		fields = ['rso_id', 'uni_id', 'num_students', 'num_events']
 		labels = {
 			'rso_id': 'Rso ID Number:',
 			'uni_id': 'Corresponding University Id:',

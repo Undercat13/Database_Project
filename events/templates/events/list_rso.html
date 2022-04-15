@@ -7,6 +7,7 @@
 	<h1> Rsos </h1>
 	<br/><br/>
     {% for rso in rsos%}
+        {% if rso.num_students >= 4 %}
         <font size="100">
             <tr>
                 <td>
@@ -16,6 +17,21 @@
                     <a  href="{% url 'edit_rso' rso.rso_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
                 </td>
             </tr>
+        }
+        {% endif %}
+        {% if rso.num_students < 4 %}
+        Pending RSOs
+        <font size="100">
+            <tr>
+                <td>
+                    <a  href="{% url 'view_rso' rso.rso_id %}">{{ rso.rso_id }} </a><br/>
+                </td>
+                <td align="right">
+                    <a  href="{% url 'edit_rso' rso.rso_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
+                </td>
+            </tr>
+        }
+        {% endif %}
     {%endfor%}
 	</center>
 </table>

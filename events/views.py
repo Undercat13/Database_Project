@@ -86,6 +86,7 @@ def add_rso(request):
 	if request.method == "POST":
 		form = RsoForm(request.POST)
 		if form.is_valid():
+			form.instance.admin_id = request.user.user_id
 			form.save()
 			return HttpResponseRedirect('/add_rso?submitted=True')
 	else:

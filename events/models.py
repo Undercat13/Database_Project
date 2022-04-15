@@ -71,11 +71,11 @@ class Events_usertbl(models.Model):
         ('Admin', 'Admin'),
         ('Superadmin', 'Superadmin'),
     )
-
     user_id = models.IntegerField(primary_key=True)
     user_type = models.CharField(max_length=20, choices=PERM_LEVELS, null=True)
     uni_id = models.IntegerField(blank=True, null=True)
-    rso_id = models.IntegerField(blank=True, null=True)
+    rso_ids = models.CharField(max_length=150)
+    rso_id = models.IntegerField(max_length=150)
 
     class Meta:
         managed = False
@@ -187,6 +187,7 @@ class Review(models.Model):
 class Rso(models.Model):
     rso_id = models.IntegerField(primary_key=True)
     uni_id = models.IntegerField()
+    admin_id = models.IntegerField()
     num_students = models.IntegerField(blank=True, null=True)
     num_events = models.IntegerField(blank=True, null=True)
 
@@ -196,6 +197,7 @@ class Rso(models.Model):
 
 
 class University(models.Model):
+    superadmin_id = models.IntegerField()
     uni_id = models.IntegerField(primary_key=True)
     uni_name = models.CharField(max_length=30, blank=True, null=True)
     num_students = models.IntegerField(blank=True, null=True)

@@ -12,11 +12,12 @@
     {% for event in events%}
         <font size="100">
             <tr>
-                {%if event.event_type != "private"%}
+                {%if event.event_type == "Public"%}
                 <td>
-                    <a  href="{% url 'view_event' event.event_id %}">{{ event.event_id }} </a><br/>
+                    <a  href="{% url 'view_event' event.event_id %}">{{ event.name}} </a><br/>
                 </td>
                 <td align="right">
+
                     {% if event.admin_id == user.user_id %}
                         {% if user.user_type == "Admin" %}
                         <a  href="{% url 'edit_event' event.event_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
@@ -27,6 +28,43 @@
                     {% endif %}
                 </td>
                 {% endif %}
+
+                {% if event.event_type == "Rso" %}
+                    {% if user.rso_id == event.rso_id %}
+                        <td>
+                            <a  href="{% url 'view_event' event.event_id %}">{{ event.name}} </a><br/>
+                        </td>
+                        <td align="right">
+                            {% if event.admin_id == user.user_id %}
+                                {% if user.user_type == "Admin" %}
+                                <a  href="{% url 'edit_event' event.event_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
+                                
+                                {% elif user.user_type == "Superadmin" %}
+                                <a  href="{% url 'edit_event' event.event_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    {% endif %}
+                {% endif %}
+
+                {% if event.event_type == "Private" %}
+                    {% if event.uni_id == user.uni_id %}
+                    <td>
+                        <a  href="{% url 'view_event' event.event_id %}">{{ event.name}} </a><br/>
+                    </td>
+                    <td align="right">
+                        {% if event.admin_id == user.user_id %}
+                            {% if user.user_type == "Admin" %}
+                            <a  href="{% url 'edit_event' event.event_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
+                            
+                            {% elif user.user_type == "Superadmin" %}
+                            <a  href="{% url 'edit_event' event.event_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    {% endif %}
+                {% endif %}
+
             </tr>
     {%endfor%}
 	</center>

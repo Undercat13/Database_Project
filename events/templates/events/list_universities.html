@@ -11,9 +11,11 @@
                 <td>
                     <a  href="{% url 'view_university' university.uni_id %}">{{ university.uni_name }} </a><br/>
                 </td>
+                {% if user.user_type == "Superadmin" %}
                 <td align="right">
                     <a  href="{% url 'edit_university' university.uni_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
                 </td>
+                {% endif %}
             </tr>
     {%endfor%}
 	</center>
