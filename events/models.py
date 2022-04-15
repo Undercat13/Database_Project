@@ -55,6 +55,32 @@ class AuthUser(models.Model):
         managed = False
         db_table = 'auth_user'
 
+class Events_usertbl(models.Model):
+    password = models.CharField(max_length=128)
+    last_login = models.DateTimeField(blank=True, null=True)
+    is_superuser = models.IntegerField()
+    username = models.CharField(unique=True, max_length=150)
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150)
+    email = models.CharField(max_length=254)
+    is_staff = models.IntegerField()
+    is_active = models.IntegerField()
+    date_joined = models.DateTimeField()
+    PERM_LEVELS = (
+        ('Student', 'Student'),
+        ('Admin', 'Admin'),
+        ('Superadmin', 'Superadmin'),
+    )
+
+    user_id = models.IntegerField(primary_key=True)
+    user_type = models.CharField(max_length=20, choices=PERM_LEVELS, null=True)
+    uni_id = models.IntegerField(blank=True, null=True)
+    rso_id = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'events_usertbl'
+
 
 class AuthUserGroups(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -124,6 +150,12 @@ class DjangoSession(models.Model):
 
 
 class Eventtbl(models.Model):
+    event_types =(
+    ('Public', 'Public'),
+    ('Private', 'Private'),
+    ('Rso', 'Rso'),
+    )
+    name = models.CharField(max_length=150, blank=True, null=True)
     event_id = models.IntegerField(primary_key=True)
     event_email = models.CharField(max_length=30, blank=True, null=True)
     date = models.DateTimeField(unique=True)
@@ -131,10 +163,9 @@ class Eventtbl(models.Model):
     event_description = models.CharField(max_length=255, blank=True, null=True)
     event_phone = models.IntegerField(blank=True, null=True)
     location_name = models.CharField(max_length=30, blank=True, null=True)
-    event_type = models.CharField(max_length=20, blank=True, null=True)
+    event_type = models.CharField(max_length=20, choices=event_types, null=True)
     rso_host = models.IntegerField(blank=True, null=True)
     admin_id = models.IntegerField(blank=True, null=True)
-
     class Meta:
         managed = False
         db_table = 'eventtbl'
@@ -185,15 +216,13 @@ class Usertbl(AbstractUser):
     )
 
     user_id = models.IntegerField(primary_key=True)
-    #user_password = models.CharField(max_length=30)
-    #user_password = models.CharField(max_length=30)
     user_type = models.CharField(max_length=20, choices=PERM_LEVELS, null=True)
     uni_id = models.IntegerField(blank=True, null=True)
     rso_id = models.IntegerField(blank=True, null=True)
 
     REQUIRED_FIELDS = ['first_name', 'last_name', 'user_id']
     def __str__(self):
-        return self.user_id
+        return self.username
 
     def get_absolute_url(self):
         return reverse('events:viewUser', kwargs={'pk': self.pk})

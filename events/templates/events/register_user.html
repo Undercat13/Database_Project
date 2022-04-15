@@ -1,0 +1,23 @@
+{% extends 'events/base.html' %}
+
+<div>
+{% block content %}
+<!-- style for removing up and down arrows for event ida nd phone num-->
+{% if form.errors %}
+
+<p>There was an error with your form...</p>
+
+{% endif %}
+	<center>
+	<h1> Register </h1>
+	<br/><br/>
+	</center>
+		<form action="{% url 'register_user' %}" method=POST>
+			{% csrf_token %}
+
+			{{ form.as_p }}
+	  <br/><br/>
+	  <button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+{% endblock %}
+</div>

@@ -4,10 +4,12 @@ from calendar import HTMLCalendar
 from datetime import datetime
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import authenticate, login, logout
-from .models import Usertbl, Eventtbl, Rso, University, Review
+from .models import Usertbl, Eventtbl, Rso, University, Review, Events_usertbl
 from .forms import EventForm, UniversityForm, RsoForm, ReviewForm
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
+
 
 def all_events(request):
 	event_lsit = Eventtbl.objects.all()
@@ -25,7 +27,7 @@ def home(request, year = datetime.now().year, month = datetime.now().strftime('%
 	now = datetime.now()
 	current_year = now.year
 
-	users = Usertbl.objects.all()
+	users = Events_usertbl.objects.all()
 
 	time = now.strftime('%I:%M:%S %p')
 	return render(request, 'events/home.html', {
@@ -59,6 +61,7 @@ def add_event(request):
 
 def add_university(request):
 	submitted = False
+	curr_user = request.user
 	if request.method == "POST":
 		form = UniversityForm(request.POST)
 		if form.is_valid():
@@ -72,7 +75,8 @@ def add_university(request):
 	return render(request, 'events/add_university.html',
 		{
 		'form': form,
-		'submitted': submitted
+		'submitted': submitted,
+		'curr_user': curr_user
 		})
 
 def add_rso(request):
@@ -99,6 +103,7 @@ def add_review(request, curr_event):
 		form = ReviewForm(request.POST)
 		if form.is_valid():
 			form.instance.event_id = curr_event
+			form.instance.user_id = request.user.user_id
 			form.save()
 			return HttpResponseRedirect('/view_event/{}'.format(curr_event))
 	else:
@@ -107,7 +112,7 @@ def add_review(request, curr_event):
 			submitted = True
 	
 	return render(request, 'events/add_review.html',{'form': form,
-		'submitted': submitted})
+		'submitted': submitted,})
 
 def rso_list(request):
 	rsos = Rso.objects.all()
@@ -119,12 +124,15 @@ def view_rso(request, curr_rso):
 
 def events_list(request):
 	events = Eventtbl.objects.all()
-	return render(request, 'events/list_events.html', {'events':events})
+	curr_user = request.user
+	return render(request, 'events/list_events.html', {'events':events,'curr_user':curr_user})
 
 def view_event(request, curr_event):
 	event = Eventtbl.objects.get(pk = curr_event)
+	curr_user = request.user
+	users = Events_usertbl.objects.all()
 	reviews = Review.objects.filter(event_id = curr_event)
-	return render(request, 'events/view_event.html', {'event':event, 'reviews':reviews})
+	return render(request, 'events/view_event.html', {'event':event, 'reviews':reviews, 'users': users, 'curr_user':curr_user})
 
 def universities_list(request):
 	universities = University.objects.all()
@@ -214,3 +222,25 @@ def edit_review(request, curr_event, curr_user):
 	return render(request, 'events/edit_review.html',{'review':review, 'form': form,
 		'submitted': submitted})
 
+def logout_user(request):
+	logout(request)
+	messages.success(request, ("You were successfully logged out"))
+	return redirect('home')
+
+def register_user(request):
+	if request.method == "POST":
+		form = UserCreationForm(request.POST)
+		if form.is_valid():
+			form.save()
+			username = form.cleaned_data['username']
+			password = form.cleaned_data['password1']
+			user = authenticate(username=username, password=password)
+			login(request, user)
+			messages.success(request, ("registration Successful"))
+			return redirect('home')
+	else:
+		form = UserCreationForm()
+
+	return render(request, 'events/register_user.html', {
+		'form': form
+		})

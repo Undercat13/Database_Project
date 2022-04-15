@@ -5,10 +5,11 @@
 <h1 class="display-3 text-center">Event Information</h1>
 <div class = 'card'>
         <div class = "card-header">
-            Event2
+            Events
         </div>
             <div class = 'card-body'>
                 <p class = 'card-text'>
+                    <li class="h3">Name: {{ event.name }}</li>
                     <li class="h3">ID: {{ event.event_id }}</li>
                     <li class="h3">Email: {{ event.event_email }}</li>
                     <li class="h3">date: {{ event.date }}</li>
@@ -25,16 +26,24 @@
         <div class = 'card-body'>
             <p class = 'card-text'>
                 {% for review in reviews %}
-                    <li class="h5">Rating: {{ review.rating }}</li>
-                    <li class="h5">{{ review.comment}}</li>
-                        <a  href="{% url 'edit_review' event.event_id review.user_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
-
+                    {% for item in users%}
+                        {% if item.user_id == review.user_id %}
+                            <li class="h5">Username: {{ item.username }}</li>
+                            <li class="h5">Rating: {{ review.rating }}</li>
+                            <li class="h5">{{ review.comment}}</li>
+                            {% if curr_user.user_id == review.user_id %}
+                                <a  href="{% url 'edit_review' event.event_id review.user_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
+                            {% endif %}
+                            <br><br>
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
             </div>
         </div>
     </div>
 </div>
 <center>
+
     <a  href="{% url 'add_review' event.event_id %}" class = 'btn btn-outline-secondary'>Add a Review </a>
 </center>
 <br>

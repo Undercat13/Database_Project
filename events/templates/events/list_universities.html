@@ -20,7 +20,9 @@
 </table>
 
 <center>
+    {% if user.user_type == "Superadmin" %}
     <a  href="{% url 'add_university'%}" class = 'btn btn-outline-secondary'>Add a University </a>
+    {% endif %}
 </center>
 
 {% endblock %}

@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Eventtbl, University, Rso, Review
+from .models import Usertbl, Eventtbl, University, Rso, Review
 
 #create event form
 class EventForm(ModelForm):
@@ -8,6 +8,7 @@ class EventForm(ModelForm):
 		model = Eventtbl
 		fields = "__all__" # might not want all of the fields example:( 'event_id', 'event_email' ect)
 		labels = {
+			'name': 'Event Name:',
 			'event_id': 'Event ID Number:',
 			'event_email': 'Contact Email:',
 			'date': 'Event Date:',
@@ -17,7 +18,7 @@ class EventForm(ModelForm):
 			'location_name': 'Event Location:',
 			'event_type': 'Event Type:',
 			'rso_host': 'Host Rso:',
-			'admin_id': 'Event Location:'
+			'admin_id': 'admin_id:'
 		}
 		CATEGORY = [
 			('public', 'Public'),
@@ -25,6 +26,7 @@ class EventForm(ModelForm):
 			('rso', 'Rso')
 		]
 		widgets = {
+			'name': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Name'}),
 			'event_id': forms.NumberInput(attrs={'class':'form-control', 'placeholder': '#'}),
 			'event_email': forms.EmailInput(attrs={'class':'form-control', 'placeholder': 'contact@email.com'}),
 			'date': forms.DateInput(attrs={'class':'form-control', 'placeholder': 'MM/DD/YYYY HH:MM'}),
@@ -76,15 +78,16 @@ class RsoForm(ModelForm):
 class ReviewForm(ModelForm):
 	class Meta:
 		model = Review
-		fields = ['user_id', 'comment', 'rating']
+		fields = [ 'comment', 'rating']
 		labels = {
 			'rating': 'Your Rating (out of 10):',
 			'comment': 'Enter Your Review:',
-			'user_id': 'Enter your User Id:',
+			#'user_id': 'Enter your User Id:',
 		}
 		widgets = {
 			'rating': forms.NumberInput(attrs={'class':'form-control', 'placeholder': '#'}),
 			'comment': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Comment Here'}),
-			'user_id':  forms.NumberInput(attrs={'class':'form-control', 'placeholder': '#'}),
+			#'user_id':  forms.NumberInput(attrs={'class':'form-control', 'placeholder': '#'}),
 		}
+
 

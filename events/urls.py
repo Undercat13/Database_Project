@@ -19,4 +19,6 @@ urlpatterns = [
     path('edit_university/<curr_university>', views.edit_university, name = 'edit_university'),
     path('view_university/<curr_uni>', views.view_university, name = 'view_university'),
     path('login_user', views.login_user, name="login_user"),
-]
+    path('logout_user', views.logout_user, name="logout_user"),
+    path('register_user', views.register_user, name="register_user"),
+    ]

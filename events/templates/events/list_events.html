@@ -3,6 +3,8 @@
 
 
 {% block content %}
+
+
 <table class='table table-striped table-hover table-bordered'>
 	<center>
 	<h1> Events </h1>
@@ -10,12 +12,21 @@
     {% for event in events%}
         <font size="100">
             <tr>
+                {%if event.event_type != "private"%}
                 <td>
                     <a  href="{% url 'view_event' event.event_id %}">{{ event.event_id }} </a><br/>
                 </td>
                 <td align="right">
-                    <a  href="{% url 'edit_event' event.event_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
+                    {% if event.admin_id == user.user_id %}
+                        {% if user.user_type == "Admin" %}
+                        <a  href="{% url 'edit_event' event.event_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
+                        
+                        {% elif user.user_type == "Superadmin" %}
+                        <a  href="{% url 'edit_event' event.event_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
+                        {% endif %}
+                    {% endif %}
                 </td>
+                {% endif %}
             </tr>
     {%endfor%}
 	</center>
