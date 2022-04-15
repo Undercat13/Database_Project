@@ -4,7 +4,7 @@ from calendar import HTMLCalendar
 from datetime import datetime
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import authenticate, login, logout
-from .models import Usertbl, Eventtbl, Rso, University
+from .models import Usertbl, Eventtbl, Rso, University, Review
 from .forms import EventForm, UniversityForm, RsoForm, ReviewForm
 from django.http import HttpResponseRedirect
 from django.contrib import messages
@@ -93,23 +93,21 @@ def add_rso(request):
 		'submitted': submitted
 		})
 
-def add_review(request):
+def add_review(request, curr_event):
 	submitted = False
 	if request.method == "POST":
 		form = ReviewForm(request.POST)
 		if form.is_valid():
+			form.instance.event_id = curr_event
 			form.save()
-			return HttpResponseRedirect('/add_review?submitted=True')
+			return HttpResponseRedirect('/view_event/{}'.format(curr_event))
 	else:
 		form = ReviewForm
 		if 'submitted' in request.GET:
 			submitted = True
 	
-	return render(request, 'events/add_review.html',
-		{
-		'form': form,
-		'submitted': submitted
-		})
+	return render(request, 'events/add_review.html',{'form': form,
+		'submitted': submitted})
 
 def rso_list(request):
 	rsos = Rso.objects.all()
@@ -125,7 +123,8 @@ def events_list(request):
 
 def view_event(request, curr_event):
 	event = Eventtbl.objects.get(pk = curr_event)
-	return render(request, 'events/view_event.html', {'event':event})
+	reviews = Review.objects.filter(event_id = curr_event)
+	return render(request, 'events/view_event.html', {'event':event, 'reviews':reviews})
 
 def universities_list(request):
 	universities = University.objects.all()
@@ -149,3 +148,69 @@ def login_user(request):
 			return redirect('login_user')
 	else:
 		return render(request, 'events/login_user.html', {})
+
+def edit_rso(request, curr_rso):
+	submitted = False
+	rso = Rso.objects.get(pk = curr_rso)
+	if request.method == "POST":
+		form = RsoForm(request.POST, instance = rso)
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect('/rso_list')
+	else:
+		form = RsoForm(instance = rso)
+		if 'submitted' in request.GET:
+			submitted = True
+
+	return render(request, 'events/edit_rso.html', {'rso':rso, 'form': form,
+		'submitted': submitted})
+
+def edit_event(request, curr_event):
+	submitted = False
+	event = Eventtbl.objects.get(pk = curr_event)
+	if request.method == "POST":
+		form = EventForm(request.POST, instance = event)
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect('/events_list')
+	else:
+		form = EventForm(instance = event)
+		if 'submitted' in request.GET:
+			submitted = True
+
+	return render(request, 'events/edit_rso.html', {'event':event, 'form': form,
+		'submitted': submitted})
+
+
+def edit_university(request, curr_university):
+	submitted = False
+	university = University.objects.get(pk = curr_university)
+	if request.method == "POST":
+		form = UniversityForm(request.POST, instance = university)
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect('/universities_list')
+	else:
+		form = UniversityForm(instance = university)
+		if 'submitted' in request.GET:
+			submitted = True
+
+	return render(request, 'events/edit_university.html', {'university':university, 'form': form,
+		'submitted': submitted})
+
+def edit_review(request, curr_event, curr_user):
+	submitted = False
+	review = Review.objects.filter(user_id = curr_user, event_id=curr_event).first()
+	if request.method == "POST":
+		form = ReviewForm(request.POST, instance = review)
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect('/view_event/{}'.format(curr_event))
+	else:
+		form = ReviewForm(instance = review)
+		if 'submitted' in request.GET:
+			submitted = True
+	
+	return render(request, 'events/edit_review.html',{'review':review, 'form': form,
+		'submitted': submitted})
+

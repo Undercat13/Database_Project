@@ -1,12 +1,26 @@
 {% extends 'events/base.html' %}
 
 {% block content %}
+<table class='table table-striped table-hover table-bordered'>
 	<center>
 	<h1> Universities </h1>
 	<br/><br/>
     {% for university in universities%}
         <font size="100">
-        <a  href="{% url 'view_university' university.uni_id %}">{{ university.uni_name }} </a><br/>
+            <tr>
+                <td>
+                    <a  href="{% url 'view_university' university.uni_id %}">{{ university.uni_name }} </a><br/>
+                </td>
+                <td align="right">
+                    <a  href="{% url 'edit_university' university.uni_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
+                </td>
+            </tr>
     {%endfor%}
 	</center>
+</table>
+
+<center>
+    <a  href="{% url 'add_university'%}" class = 'btn btn-outline-secondary'>Add a University </a>
+</center>
+
 {% endblock %}

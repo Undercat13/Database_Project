@@ -176,13 +176,23 @@ class University(models.Model):
         db_table = 'university'
 
 
-class Usertbl(models.Model):
+class Usertbl(AbstractUser):
+    PERM_LEVELS = (
+        ('Student', 'Student'),
+        ('Admin', 'Admin'),
+        ('Superadmin', 'Superadmin'),
+    )
+
     user_id = models.IntegerField(primary_key=True)
-    user_password = models.CharField(max_length=30)
-    user_type = models.CharField(max_length=20)
+    #user_password = models.CharField(max_length=30)
+    #user_password = models.CharField(max_length=30)
+    user_type = models.CharField(max_length=20, choices=PERM_LEVELS, null=True)
     uni_id = models.IntegerField(blank=True, null=True)
     rso_id = models.IntegerField(blank=True, null=True)
 
-    class Meta:
-        managed = False
-        db_table = 'usertbl'
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'user_id']
+    def __str__(self):
+        return self.user_id
+
+    def get_absolute_url(self):
+        return reverse('events:viewUser', kwargs={'pk': self.pk})

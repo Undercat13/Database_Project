@@ -1,0 +1,12 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+<br>
+<table class='table table-striped table-hover table-bordered'>
+<form action =''method =POST>
+    {%csrf_token%}
+    {{ form.as_p }}
+    <br/>
+    <input type = "submit" value="Update" class='btn btn-secondary'>
+</table>
+{% endblock %}

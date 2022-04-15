@@ -1,12 +1,26 @@
 {% extends 'events/base.html' %}
 
+
+
 {% block content %}
+<table class='table table-striped table-hover table-bordered'>
 	<center>
 	<h1> Events </h1>
 	<br/><br/>
     {% for event in events%}
         <font size="100">
-        <a  href="{% url 'view_event' event.event_id %}">{{ event.event_id }} </a><br/>
+            <tr>
+                <td>
+                    <a  href="{% url 'view_event' event.event_id %}">{{ event.event_id }} </a><br/>
+                </td>
+                <td align="right">
+                    <a  href="{% url 'edit_event' event.event_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
+                </td>
+            </tr>
     {%endfor%}
 	</center>
+</table>
+<center>
+    <a  href="{% url 'add_event'%}" class = 'btn btn-outline-secondary'>Add an Event </a>
+</center>
 {% endblock %}

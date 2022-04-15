@@ -1,19 +1,43 @@
 {% extends 'events/base.html' %}
 
 {% block content %}
+
 <h1 class="display-3 text-center">Event Information</h1>
-<br><br><br>
-<div class="container-fluid text-center col-auto">
-    <p class="h3">Event ID: {{ event.event_id }}</p>
-    <p class="h3">Event Email: {{ event.event_email }}</p>
-    <p class="h3">Event date: {{ event.date }}</p>
-    <p class="h3">Event Category: {{ event.event_category }}</p>
-    <p class="h3">Event Description: {{ event.event_description }}</p>
-    <p class="h3">Event Contact Number: {{ event.event_phone }}</p>
-    <p class="h3">Event Type: {{ event.event_type }}</p>
-    <p class="h3">Event Host: <a  href="{% url 'view_rso' event.rso_host %}">{{ event.rso_host }} </a></p>
-    <br/>
-    <br>
+<div class = 'card'>
+        <div class = "card-header">
+            Event2
+        </div>
+            <div class = 'card-body'>
+                <p class = 'card-text'>
+                    <li class="h3">ID: {{ event.event_id }}</li>
+                    <li class="h3">Email: {{ event.event_email }}</li>
+                    <li class="h3">date: {{ event.date }}</li>
+                    <li class="h3">Category: {{ event.event_category }}</li>
+                    <li class="h3">Description: {{ event.event_description }}</li>
+                    <li class="h3">Contact Number: {{ event.event_phone }}</li>
+                    <li class="h3">Type: {{ event.event_type }}</li>
+                    <li class="h3">Host: <a  href="{% url 'view_rso' event.rso_host %}">{{ event.rso_host }} </a></li>
+                </div>
+            </div>
+        <div class = "card-header">
+            Comments
+        </div>
+        <div class = 'card-body'>
+            <p class = 'card-text'>
+                {% for review in reviews %}
+                    <li class="h5">Rating: {{ review.rating }}</li>
+                    <li class="h5">{{ review.comment}}</li>
+                        <a  href="{% url 'edit_review' event.event_id review.user_id %}" class = 'btn btn-outline-secondary btn-sm'>Edit </a>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
+<center>
+    <a  href="{% url 'add_review' event.event_id %}" class = 'btn btn-outline-secondary'>Add a Review </a>
+</center>
+<br>
+</br>
 
 {% endblock%}
