@@ -1,0 +1,332 @@
+ucf
+lat 28.602427
+long -81.200058
+
+usf
+lat 26.090710
+long -80.251312
+
+unf
+lat 30.266389107854593
+long  -81.50717775774
+
+users
+username: superadmin
+password: superadmin
+type: superadmin
+uni: ucf (1)
+id: 1
+
+username: admin
+password: adminadmin
+type: admin
+uni: ucf (1)
+id: 2
+
+username: std1
+password: student1
+type: student
+uni: ucf (1)
+id: 3
+
+username: std2
+password: student1
+type: student
+uni: ucf (1)
+id: 4
+
+username: std3
+password: student1
+type: student
+uni: ucf (1)
+id: 5
+
+username: std4
+password: student1
+type: student
+uni: ucf (1)
+id: 6
+
+username: std5
+password: student1
+type: student
+uni: ucf (1)
+id: 7
+
+username: admin2
+password: adminadmin
+type: admin
+uni: usf (2)
+id: 8
+
+username: std6
+password: student1
+type: student
+uni: usf (2)
+id: 9
+
+username: std7
+password: student1
+type: student
+uni: usf (2)
+id: 10
+
+username: std8
+password: student1
+type: student
+uni: usf (2)
+id: 11
+
+username: admin3
+password: adminadmin
+type: admin
+uni: unf (3)
+id: 12
+
+username: std9
+password: student1
+type: student
+uni: unf (3)
+id: 13
+
+username: std10
+password: student1
+type: student
+uni: unf (3)
+id: 14
+
+username: std11
+password: student1
+type: student
+uni: unf (3)
+id: 15
+
+RSO
+UCF 4 events
+name: databases
+id: 1
+admin id: 2
+#s: 5
+#e: 3
+
+name: engineering leaders
+id: 2
+admin id: 2
+#s: 5
+#e: 1
+
+name: singing club
+id: 3
+admin id: 2
+#s: 3
+#e: 0
+
+USF 4 events
+name: frisbee
+id: 4
+admin id: 8
+#s: 4
+#e: 3
+
+name: tech bros
+id: 5
+admin id: 8
+#s: 4
+#e: 1
+
+name: golf
+id: 6
+admin id: 8
+#s: 2
+#e: 0
+
+
+UNF 3 events
+
+name: astronomy
+id: 7
+admin id: 12
+#s: 4
+#e: 2
+
+name: rock climbing
+id: 8
+admin id: 12
+#s: 3
+#e: 1
+
+
+ucf  events:
+
+private
+event id: 1
+name: graduation
+event_email graduation@knights.ucf.edu
+date: 5/6/2022
+category: any
+phone: 555 555 5555
+location: ucf
+rso_host:
+
+public
+event id: 2
+name: football game
+event_email football@knights.ucf.edu
+date: 8/27/2022
+category: Sports
+phone: 555 555 5555
+location: ucf
+rso_host:
+
+event id: 3
+name: Concert
+event_email concert@knights.ucf.edu
+date: 4/15/2022
+category: Concert
+phone: 555 555 5555
+location: ucf
+rso_host:
+
+RSO events
+event id: 4
+name: team breakfast
+event_email database@knights.ucf.edu
+date: 4/20/2022
+category: social
+phone: 555 555 5555
+location: ucf. mem mall
+rso_host: 1
+
+event id: 5
+name: team builing
+event_email database@knights.ucf.edu
+date: 4/18/2022
+category: social
+phone: 555 555 5555
+location: ucf
+rso_host: 1
+
+event id: 6
+name: hack a thon
+event_email database@knights.ucf.edu
+date: 4/26/2022
+category: competition
+phone: 555 555 5555
+location: ucf.engineering building
+rso_host: 1
+
+event id: 7
+name: job fair
+event_email leadengineers@knights.ucf.edu
+date: 4/14/2022
+category: social
+phone: 555 555 5555
+location: ucf . stadium
+rso_host: 2
+
+usf
+private
+event id: 8
+name: lunch in
+event_email: stdgov@bulls.usf.edu
+date: 5/9/2022
+category: social
+phone: 555 555 5555
+location: usf
+rso_host:
+
+public
+event id: 9
+name: orientation
+event_email: stdgov@bulls.usf.edu
+date: 5/20/2022
+category: social
+phone: 555 555 5555
+location: usf
+rso_host:
+
+RSO 4
+event id: 10
+name: quarter finals
+event_email: frisbee@bulls.usf.edu
+date: 5/1/2022
+category: Sports
+phone: 555 555 5555
+location: usf
+rso_host: 4
+
+event id: 11
+name: semi finals
+event_email: frisbee@bulls.usf.edu
+date: 5/9/2022
+category: Sports
+phone: 555 555 5555
+location: usf
+rso_host: 4
+
+event id: 12
+name: championship
+event_email: frisbee@bulls.usf.edu
+date: 5/16/2022
+category: Sports
+phone: 555 555 5555
+location: usf
+rso_host: 4
+
+event id: 13
+name: ted talk
+event_email: techbros@bulls.usf.edu
+date: 4/29/2022
+category: tech talk
+phone: 555 555 5555
+location: usf
+rso_host: 5
+
+unf
+private
+event id: 14
+name: safety 101
+event_email: stdgovt@osprey.usf.edu
+date: 4/27/2022
+category: lecture
+phone: 555 555 5555
+location: unf
+rso_host:
+
+public
+event id: 15
+name: taxes
+event_email: stdgovt@osprey.usf.edu
+date: 4/24/2022
+category: lecture
+phone: 555 555 5555
+location: unf
+rso_host:
+
+RSO
+event id: 16
+name: astroid viewing
+event_email: astro@osprey.usf.edu
+date: 5/30/2022
+category: lecture
+phone: 555 555 5555
+location: unf
+rso_host: 7
+
+event id: 16
+name: Comet viewing
+event_email: astro@osprey.usf.edu
+date: 5/18/2022
+category: lecture
+phone: 555 555 5555
+location: unf
+rso_host: 7
+
+event id: 17
+name: spring challeng
+event_email: rocks@osprey.usf.edu
+date: 4/29/2022
+category: competition
+phone: 555 555 5555
+location: unf
+rso_host: 7

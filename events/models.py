@@ -200,7 +200,6 @@ class Rso(models.Model):
 
 
 class University(models.Model):
-    superadmin_id = models.IntegerField()
     uni_id = models.IntegerField(primary_key=True)
     uni_name = models.CharField(max_length=30, blank=True, null=True)
     num_students = models.IntegerField(blank=True, null=True)

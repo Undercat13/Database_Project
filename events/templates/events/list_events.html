@@ -41,6 +41,7 @@
     {% for event in events%}
             <tr>
                 {% if event.event_category == "rso" %}
+                {% if event.uni_id == user.uni_id %}
                     {% if curr_user.rso_id == event.rso_id %}
                         <td>
                             <a  href="{% url 'view_event' event.event_id %}">{{ event.name}} </a><br/>
@@ -59,6 +60,7 @@
                             {% endif %}
                         </td>
                     {% endif %}
+                {% endif %}
                 {% endif %}
             </tr>
     {%endfor%}
