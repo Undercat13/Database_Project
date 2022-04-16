@@ -22,7 +22,7 @@ The sql querries should now show up in models.py
 
 
 current sql
-![image](https://user-images.githubusercontent.com/48971142/163459557-af80267d-075e-4219-8177-34fa8d887b9a.png)
+![image](https://user-images.githubusercontent.com/48971142/163653850-0f10243e-da2b-4036-8ff4-ebfda7bdf84a.png)
 
 the main differecnce are the: events_usertbl, events_usertbl_groups, events_usertbl_user_permissions.
 
