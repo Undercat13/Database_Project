@@ -6,8 +6,8 @@ from datetime import datetime
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from events.models import Usertbl
-from .models import Eventtbl, Rso, University, Review, Events_usertbl
-from .forms import EventForm, RegistrationForm, UniversityForm, RsoForm, ReviewForm
+from .models import Eventtbl, Rso, University, Review, Events_usertbl, location
+from .forms import EventForm, RegistrationForm, UniversityForm, RsoForm, ReviewForm,LocationForm
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
@@ -48,23 +48,28 @@ def add_event(request):
 	submitted = False
 	if request.method == "POST":
 		form = EventForm(request.POST)
-		if form.is_valid():
+		form2 = LocationForm(request.POST)
+		if form.is_valid() and form2.is_valid():
 			form.instance.admin_id = request.user.user_id
 			form.instance.uni_id = request.user.uni_id
 			if (form.instance.rso_host != 0):
 				rso = Rso.objects.get(rso_id = form.instance.rso_host)
 				rso.num_events += 1
 				rso.save()
+			form.instance.location_name = form2.instance.location_name
 			form.save()
+			form2.save()
 			return HttpResponseRedirect('/add_event?submitted=True')
 	else:
 		form = EventForm(initial={"rso_host": "0"})
+		form2 = LocationForm()
 		if 'submitted' in request.GET:
 			submitted = True
 	
 	return render(request, 'events/add_event.html',
 		{
 		'form': form,
+		'form2': form2,
 		'submitted': submitted
 		})
 
@@ -169,7 +174,10 @@ def view_event(request, curr_event):
 	curr_user = request.user
 	users = Events_usertbl.objects.all()
 	reviews = Review.objects.filter(event_id = curr_event)
-	return render(request, 'events/view_event.html', {'event':event, 'reviews':reviews, 'users': users, 'curr_user':curr_user})
+	local  = location.objects.get(pk = event.location_name)
+	local.latitude = float(local.latitude)
+	local.longitude = float(local.longitude)
+	return render(request, 'events/view_event.html', {'event':event, 'reviews':reviews, 'users': users, 'curr_user':curr_user, 'local':local})
 
 def universities_list(request):
 	universities = University.objects.all()

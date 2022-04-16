@@ -213,6 +213,16 @@ class University(models.Model):
         db_table = 'university'
 
 
+class location(models.Model):
+    location_name = models.CharField(max_length=30, primary_key=True)
+    address= models.CharField(max_length=50, blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
+    latitude = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'location'
+
 class Usertbl(AbstractUser):
     PERM_LEVELS = (
         ('Student', 'Student'),
@@ -230,3 +240,4 @@ class Usertbl(AbstractUser):
 
     def get_absolute_url(self):
         return reverse('events:viewUser', kwargs={'pk': self.pk})
+

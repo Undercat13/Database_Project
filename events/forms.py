@@ -1,13 +1,13 @@
 from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from .models import Usertbl, Eventtbl, University, Rso, Review
+from .models import Usertbl, Eventtbl, University, Rso, Review, location
 
 #create event form
 class EventForm(ModelForm):
 	class Meta:
 		model = Eventtbl
-		fields = ['name', 'event_id', 'event_email', 'date', 'event_category', 'event_description', 'event_phone', 'location_name', 'event_type', 'rso_host'] # might not want all of the fields example:( 'event_id', 'event_email' ect)
+		fields = ['name', 'event_id', 'event_email', 'date', 'event_category', 'event_description', 'event_phone', 'event_type', 'rso_host'] # might not want all of the fields example:( 'event_id', 'event_email' ect)
 		labels = {
 			'name': 'Event Name:',
 			'event_id': 'Event ID Number:',
@@ -46,6 +46,23 @@ class EventForm(ModelForm):
 			'location_name':  forms.TextInput(attrs={'class':'form-control','placeholder': 'Location'}),
 			'event_type':  forms.Select(choices=categories, attrs={'class':'form-control'}),
 			'rso_host':  forms.NumberInput(attrs={'class':'form-control', 'initial': "0"}),
+		}
+
+class LocationForm(ModelForm):
+	class Meta:
+		model = location
+		fields = '__all__'
+		labels = {
+			'location_name': 'Location name:',
+			'address': 'Address:',
+			'longitude': 'Longitude:',
+			'latitude': 'Latitude:',
+		}
+		widgets = {
+			'location_name': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'location name'}),
+			'address': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Address'}),
+			'longitude':  forms.NumberInput(attrs={'class':'form-control', 'placeholder': '#'}),
+			'latitude':  forms.NumberInput(attrs={'class':'form-control','placeholder': '#'})
 		}
 
 class UniversityForm(ModelForm):
